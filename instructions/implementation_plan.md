@@ -6,11 +6,11 @@ This plan outlines the creation of a Go-based REST API that ingests weather data
 ## 1. Formatted Steps
 
 ### Phase 1: Environment & Database Setup
-- [ ] **Adjust Docker Setup**: Update the `docker run` command to use a `./data` subdirectory for persistence.
-- [ ] **Initialize Database Schema**:
+- [x] **Adjust Docker Setup**: Update the `docker run` command to use a `./data` subdirectory for persistence.
+- [x] **Initialize Database Schema**:
     - Create a standard PostgreSQL table for `weather_metrics`.
     - Transform it into a **Hypertable** partitioned by time using `SELECT create_hypertable('weather_metrics', 'time');`.
-- [ ] **Go Project Initialization**: Initialize the module and install the `pgx` driver.
+- [x] **Go Project Initialization**: Initialize the module and install the `pgx` driver.
 
 ### Phase 2: Database Connectivity in Go
 - [ ] **Connection Pooling**: Implement a connection pool using `pgxpool` to safely handle concurrent requests.
