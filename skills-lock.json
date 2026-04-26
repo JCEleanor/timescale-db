@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "skills": {
+    "golang-pro": {
+      "source": "jeffallan/claude-skills",
+      "sourceType": "github",
+      "computedHash": "c90a0798a12ea2d9191508439ec3191dd96713310615260ebe82ec5a09a4a434"
+    },
+    "timescaledb": {
+      "source": "2025emma/vibe-coding-cn",
+      "sourceType": "github",
+      "computedHash": "92c2ff10f5814a92999c2e390e2ecaf21284206961881d8478aacdc3773075a5"
+    }
+  }
+}

@@ -1,5 +1,7 @@
 ## Overview
 
+### Phase 1
+
 The goal of this project is to learn Golang and timescale Databse.
 I've installed everything inlcuding Go and postgres SQL which is installed both with docker and locally.
 
@@ -16,3 +18,7 @@ The implementation plan must include:
 
 1. formatted steps outlined what to do
 2. key learning points and key takeaways
+
+### Phase 2
+
+PoC backend design in the knowledge foldeer.
