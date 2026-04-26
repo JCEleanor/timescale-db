@@ -13,8 +13,8 @@ This plan outlines the creation of a Go-based REST API that ingests weather data
 - [x] **Go Project Initialization**: Initialize the module and install the `pgx` driver.
 
 ### Phase 2: Database Connectivity in Go
-- [ ] **Connection Pooling**: Implement a connection pool using `pgxpool` to safely handle concurrent requests.
-- [ ] **Health Check**: Create a simple function to verify the database connection on startup.
+- [x] **Connection Pooling**: Implement a connection pool using `pgxpool` to safely handle concurrent requests.
+- [x] **Health Check**: Create a simple function to verify the database connection on startup.
 
 ### Phase 3: Server Implementation
 - [ ] **REST API Setup**: Use the standard `net/http` package (or a router like `chi`) to create endpoints.
