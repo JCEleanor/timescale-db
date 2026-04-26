@@ -18,7 +18,7 @@ This plan outlines the creation of a Go-based REST API that ingests weather data
 
 ### Phase 3: Server Implementation
 - [ ] **REST API Setup**: Use the standard `net/http` package (or a router like `chi`) to create endpoints.
-- [ ] **Data Ingestion (POST /metrics)**:
+- [x] **Data Ingestion (POST /metrics)**:
     - Define a `Metric` struct.
     - Implement a handler to parse JSON and insert data into the `weather_metrics` table.
 - [ ] **Querying Data (GET /stats)**:

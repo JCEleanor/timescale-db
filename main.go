@@ -30,6 +30,8 @@ func main() {
 	defer pool.Close()
 
 	http.HandleFunc("/metrics", handlePostMetrics(pool))
+	http.HandleFunc("/stats", handleGetStats(pool))
+
 	fmt.Println("Server is running on http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 	// err = pool.Ping(context.Background())
@@ -71,5 +73,52 @@ func handlePostMetrics(pool *pgxpool.Pool) http.HandlerFunc {
 
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprintf(w, "Metric recorded successfully for %s", m.Location)
+	}
+}
+
+func handleGetStats(pool *pgxpool.Pool) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// only allow GET requests
+		if r.Method != http.MethodGet {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+
+		query := `
+                SELECT 
+                    time_bucket('1 hour', time) AS bucket, 
+                    AVG(temperature) as avg_temp, 
+                    MAX(temperature) as max_temp,
+                    COUNT(*) as sample_count
+                FROM weather_metrics 
+                GROUP BY bucket 
+                ORDER BY bucket DESC;`
+
+		rows, err := pool.Query(context.Background(), query)
+		if err != nil {
+			http.Error(w, "Query failed", http.StatusInternalServerError)
+			return
+		}
+
+		// NOTE: Every time you query, you must close the result set so you don't leak database connections
+		defer rows.Close()
+
+		var stats []WeatherStats
+		for rows.Next() {
+			var s WeatherStats
+			// rows.Scan(...): This copies the data from the current database row into your Go struct.
+			// The order of variables must match the order in your SELECT statement.
+			err := rows.Scan(&s.Bucket, &s.AvgTemp, &s.MaxTemp, &s.SampleCount)
+
+			if err != nil {
+				http.Error(w, "Internal error", http.StatusInternalServerError)
+				return
+			}
+			stats = append(stats, s)
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(stats)
+
 	}
 }

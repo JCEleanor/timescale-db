@@ -66,11 +66,29 @@ Because the type comes second, Go can easily omit it when it's obvious:
 age := 25 // Go knows it's an int
 ```
 
-### Context
+### Context (singleton)
 
 TODO:
 
 `context.Background()`: Think of it as an "envelope" that travels with your request. It can carry deadlines or signals to stop work.
+
+1. It is a "Sentinel": It’s a global singleton. No matter how many times you call it, it returns the same instance.
+2. Immutability: Contexts are immutable. You never "change" a context; you create a new "child" context with a change (like a timeout) based on the parent.
+3. Thread Safety: You can pass the same context to 1,000 different `goroutines` (Go's lightweight threads) safely.
+
+- The "Better" Way (Advanced):
+
+In a real web server, you usually wouldn't use `Background()` inside a handler. Instead, you would use the context provided by the web request:
+
+```go
+    func handler(w http.ResponseWriter, r *http.Request) {
+        // r.Context() is a context that is automatically cancelled
+        // if the user closes their browser tab!
+        rows, err := pool.Query(r.Context(), query)
+    }
+```
+
+By using `r.Context()`, if the database query takes 30 seconds but the user gets bored and leaves after 2 seconds, Go will automatically kill the database query to save CPU and Memory.
 
 ### `if err != nil`
 
@@ -101,6 +119,10 @@ type WeatherMetric struct {
 
 ```
 
+### Slice
+
+`[]WeatherStats`: The [] means this is a Slice. In Go, a slice is a dynamic array that can grow or shrink
+
 ## Run the program
 
 1. The "Development" Way (Run without compiling)
@@ -124,7 +146,9 @@ go build -o iot-server
 ./iot-server
 ```
 
-## POSTGRES
+## POSTGRES / TimeScaleDB
+
+### `time_bucket`
 
 ### check container status
 
