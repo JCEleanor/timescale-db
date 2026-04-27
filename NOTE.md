@@ -68,6 +68,8 @@ age := 25 // Go knows it's an int
 
 ### Context (singleton)
 
+### channel
+
 TODO:
 
 `context.Background()`: Think of it as an "envelope" that travels with your request. It can carry deadlines or signals to stop work.

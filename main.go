@@ -64,6 +64,7 @@ func handlePostMetrics(pool *pgxpool.Pool) http.HandlerFunc {
 
 		// insert
 		query := `INSERT INTO weather_metrics (time, location, temperature, humidity) VALUES ($1, $2, $3, $4)`
+		// FIXME: use r.context(), so if the request got canclled, we can abort the query
 		_, err = pool.Exec(context.Background(), query, m.Time, m.Location, m.Temperature, m.Humidity)
 		if err != nil {
 			http.Error(w, "Failed to insert data", http.StatusInternalServerError)
@@ -94,6 +95,7 @@ func handleGetStats(pool *pgxpool.Pool) http.HandlerFunc {
                 GROUP BY bucket 
                 ORDER BY bucket DESC;`
 
+		// FIXME: use r.context(), so if the request got canclled, we can abort the query
 		rows, err := pool.Query(context.Background(), query)
 		if err != nil {
 			http.Error(w, "Query failed", http.StatusInternalServerError)
